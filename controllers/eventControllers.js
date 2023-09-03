@@ -35,9 +35,9 @@ const inviteUser = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    const invitedUser = await User.findById(invitee);
-    if (!invitedUser)
-      return res.status(404).json({ message: "Invitee not found" });
+    // const invitedUser = await User.findById(invitee);
+    // if (!invitedUser || !invitee)
+    //   return res.status(404).json({ message: "Invitee not found" });
     const user = User.findById(event.creator);
     const creator = user._id;
     const newInvitee = new Invitee({
