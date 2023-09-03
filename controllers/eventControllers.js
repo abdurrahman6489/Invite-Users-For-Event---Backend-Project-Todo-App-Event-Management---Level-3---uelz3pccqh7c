@@ -29,9 +29,27 @@ const inviteUser = async (req, res) => {
   try {
     //Write your code here for inviting users to a event and storing it to DB,
     //Kindly refer to eventInviteeMapping.js in models. As we are storing this data into different table
+    const eventId = req.body.eventId;
+    const invitee = req.body.invitee;
+    const event = await Event.findById(eventId);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+    const invitedUser = await User.findById(invitee);
+    if (!invitedUser)
+      return res.status(404).json({ message: "Invitee not found" });
+    const user = User.findById(event.creator);
+    const creator = user._id;
+    const newInvitee = new Invitee({
+      eventId,
+      creator,
+      invitee,
+    });
+    await newInvitee.save();
+    return res.json({ message: "Users invited successfully" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Server Error' });
+    res.status(500).json({ message: "Server Error" });
   }
 };
 
