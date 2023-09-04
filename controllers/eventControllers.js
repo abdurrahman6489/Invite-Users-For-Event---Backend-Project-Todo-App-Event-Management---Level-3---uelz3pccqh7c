@@ -35,17 +35,17 @@ const inviteUser = async (req, res) => {
     if (!event) {
       return res.status(404).json({ message: "Event not found" });
     }
-    // const invitedUser = await User.findById(invitee);
-    // if (!invitedUser || !invitee)
-    //   return res.status(404).json({ message: "Invitee not found" });
-    const user = User.findById(event.creator);
-    const creator = user._id;
-    const newInvitee = new Invitee({
-      eventId,
-      creator,
-      invitee,
-    });
-    await newInvitee.save();
+    const invitedUser = await Event.findById({ invitee });
+    if (!invitedUser || !invitee)
+      return res.status(404).json({ message: "Invitee not found" });
+    // const user = User.findById(event.creator);
+    // const creator = user._id;
+    // const newInvitee = new Invitee({
+    //   eventId,
+    //   creator,
+    //   invitee,
+    // });
+    // await newInvitee.save();
     return res.json({ message: "Users invited successfully" });
   } catch (err) {
     console.error(err);
